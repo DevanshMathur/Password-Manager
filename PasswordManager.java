@@ -14,6 +14,8 @@ class DBMS /*implements MouseListener*/
 public class PasswordManager extends DBMS implements MouseListener, ActionListener
 {
 	JFrame f=new JFrame("PasswordManager");
+	JFrame f1=new 
+
 	JPanel p1=new JPanel();
 	JPanel p2=new JPanel();
 	JPanel p3=new JPanel();
@@ -243,4 +245,5 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 	{
 		new PasswordManager();
 	}
+	
 }
