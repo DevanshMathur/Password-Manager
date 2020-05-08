@@ -7,14 +7,47 @@ import java.awt.Toolkit;
 import java.awt.Rectangle;
 */
 
-class DBMS /*implements MouseListener*/
+class DBMS 
 {
+	DBMS()
+	{
+		Statement stmt=null;
+		Connection con=null;
+		try
+		{
+			Class.forName("con.mysql.cj.jdbc.Driver");
+			con=DriverManager.getConnection("jdbc:mysql://localhost:3306/password_manager","root","Tiger");
+			stmt=con.createStatement();
+		}
+		catch(Exception e)
+		{
+			try
+			{
+				con=DriverManager.getConnection("jdbc:mysql://localhost:3306/","root","Tiger");
+				stmt=con.createStatement();
+				stmt.executeUpdate("create database password_manager");
+				con=DriverManager.getConnection("jdbc:mysql://localhost:3306/password_manager","root","Tiger");
+			}
+			catch(Exception e1)
+			{
+				System.out.println("e:"+e);
+				System.out.println("e1:"+e1);
+			}
+		} 
+	}
+	int DBReg()
+	{
 
+	}
+	int DBlogin()
+	{
+
+	}
 }
 public class PasswordManager extends DBMS implements MouseListener, ActionListener
 {
 	JFrame f=new JFrame("PasswordManager");
-	JFrame f1=new 
+	JFrame f1=new JFrame("Your Paswords");
 
 	JPanel p1=new JPanel();
 	JPanel p2=new JPanel();
