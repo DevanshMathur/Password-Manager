@@ -11,37 +11,35 @@ class DBMS
 {
 	DBMS()
 	{
-		Statement stmt=null;
-		Connection con=null;
 		try
 		{
-			Class.forName("con.mysql.cj.jdbc.Driver");
-			con=DriverManager.getConnection("jdbc:mysql://localhost:3306/password_manager","root","Tiger");
-			stmt=con.createStatement();
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/password_manager","root","Tiger");
+			Statement stmt=con.createStatement();
 		}
 		catch(Exception e)
 		{
+			System.out.println("e:"+e);
 			try
 			{
-				con=DriverManager.getConnection("jdbc:mysql://localhost:3306/","root","Tiger");
-				stmt=con.createStatement();
+				Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/","root","Tiger");
+				Statement stmt=con.createStatement();
 				stmt.executeUpdate("create database password_manager");
 				con=DriverManager.getConnection("jdbc:mysql://localhost:3306/password_manager","root","Tiger");
 			}
 			catch(Exception e1)
 			{
-				System.out.println("e:"+e);
 				System.out.println("e1:"+e1);
 			}
 		} 
 	}
 	int DBReg()
 	{
-
+		return 1;
 	}
 	int DBlogin()
 	{
-
+		return 1;
 	}
 }
 public class PasswordManager extends DBMS implements MouseListener, ActionListener
