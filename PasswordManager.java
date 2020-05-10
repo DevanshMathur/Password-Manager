@@ -9,37 +9,43 @@ import java.awt.Rectangle;
 
 class DBMS 
 {
+	JFrame frame =new JFrame();
+	Connection con;
+	Statement stmt;
 	DBMS()
 	{
+		String sql="CREATE TABLE Reg ("+
+					"FNAME VARCHAR(30) NOT NULL ,"+
+					"LNAME VARCHAR(30) ,"+
+					"UNAME VARCHAR(45) NOT NULL ,"+
+					"PWORD VARCHAR(32) NOT NULL ,"+
+					"PNUM VARCHAR(13) NOT NULL ,"+
+					"PRIMARY KEY (UNAME))";
 		try
 		{
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/password_manager","root","Tiger");
-			Statement stmt=con.createStatement();
+			con=DriverManager.getConnection("jdbc:mysql://localhost:3306/pmng","root","Tiger");
+			stmt=con.createStatement();
 		}
 		catch(Exception e)
 		{
-			System.out.println("e:"+e);
+			//System.out.println("P1:"+e);
+			JOptionPane.showMessageDialog(frame,"Creating Database\n"+e);
 			try
 			{
-				Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/","root","Tiger");
-				Statement stmt=con.createStatement();
-				stmt.executeUpdate("create database password_manager");
-				con=DriverManager.getConnection("jdbc:mysql://localhost:3306/password_manager","root","Tiger");
+				con=DriverManager.getConnection("jdbc:mysql://localhost:3306/","root","Tiger");
+				stmt=con.createStatement();
+				stmt.executeUpdate("create database pmng");
+				con=DriverManager.getConnection("jdbc:mysql://localhost:3306/pmng","root","Tiger");
+				stmt=con.createStatement();
+				stmt.executeUpdate(sql);
 			}
 			catch(Exception e1)
 			{
-				System.out.println("e1:"+e1);
+				//System.out.println("P2:"+e1);
+				JOptionPane.showMessageDialog(frame,e1);
 			}
-		} 
-	}
-	int DBReg()
-	{
-		return 1;
-	}
-	int DBlogin()
-	{
-		return 1;
+		}	 
 	}
 }
 public class PasswordManager extends DBMS implements MouseListener, ActionListener
@@ -51,16 +57,15 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 	JPanel p2=new JPanel();
 	JPanel p3=new JPanel();
 
-	JButton b1=new JButton("Login");
-	JButton b2=new JButton("Register");
-	JButton b3=new JButton("Sign In");
-	JButton b4=new JButton("Sign Up");
-
+	JButton b1=new JButton("Sign In");
+	JButton b2=new JButton("Sign Up");
+	JButton b3=new JButton("Login");
+	JButton b4=new JButton("Register");
+	
 	JLabel l1=new JLabel("Welcome To Password Manager.");
 	JLabel l2=new JLabel("Your Passwords are secure with us.");
 	JLabel l3=new JLabel("User Name");
 	JLabel l4=new JLabel("Password");
-
 	JLabel l5=new JLabel("Login with your Account"); 
 	JLabel l6=new JLabel("Create your Account");
 	JLabel l7=new JLabel("First name");
@@ -82,7 +87,7 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 	JPasswordField ps2=new JPasswordField();
 	JPasswordField ps3=new JPasswordField();
 
-/*	JScrollBar hbar=new JScrollBar(JScrollBar.HORIZONTAL);
+	/*	JScrollBar hbar=new JScrollBar(JScrollBar.HORIZONTAL);
 	JScrollBar vbar=new JScrollBar(JScrollBar.VERTICAL);*/
 	
 	PasswordManager()
@@ -115,7 +120,7 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		b2.addActionListener(this);
 		
 		
-		f.setSize(600,800);
+		f.setSize(600,700);
 		
 		f.setVisible(true);
 		p1.setLocation(200,200);
@@ -124,13 +129,7 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Bound();
 		f.addMouseListener(this);
-		/*addMouseListener(new MouseListener(){
-		public void mouseClicked(MouseEvent e){
-			Bound();
-			}
-		
-		});*/
-
+		/*addMouseListener(new MouseListener(){public void mouseClicked(MouseEvent e){Bound();}});*/
 	}
 	void Bound()
 	{
@@ -141,12 +140,9 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		x/=2;
 		y/=2;		
 		p1.setLocation(x,y);
-
-
 	}
 	void Login()
 	{
-
 		p1.remove(p3);
 		p1.remove(b1);
 		p1.add(b2);
@@ -170,9 +166,6 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		b3.addActionListener(this);		
 		p2.setLayout(null);
 		f.repaint();
-		
-		
-	
 	}
 	void Register()
 	{
@@ -214,24 +207,23 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 
 		b4.addActionListener(this);
 		p3.setLayout(null);
-		f.repaint();
-		
+		f.repaint();	
 	}
-	int SignUp()
+	/*int SignUp()
 	{
 		return(1);
 	}
 	int SignIn()
 	{
 		return(1);
-	}
+	}*/
 	public void mouseEntered(MouseEvent e)
 	{
 		Bound();
 	}
 	public void mouseClicked(MouseEvent e)
 	{
-		//Bound();
+		f.repaint();
 	}
 	public void mouseExited(MouseEvent e)
 	{
@@ -249,14 +241,32 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 	{
 		String str=e.getActionCommand();
 		Bound();
-		if (str=="Login")
+		if (str=="Sign In")
 		{
 			Login();
+			t1.setText("");
+			ps1.setText("");
+		}
+		else if (str=="Sign Up")
+		{
+			Register();
+			t2.setText("");
+			t3.setText("");
+			t4.setText("");
+			ps2.setText("");
+			ps3.setText("");
+			t5.setText("");
+		}
+		else if (str=="Login")
+		{
+			DBlogin();
 		}
 		else if (str=="Register")
 		{
-			Register();
+			if (DBReg()==1)
+				Login();
 		}
+		/*else if ()
 		else if (str=="Sign Up")
 		{
 			if (SignUp()==1)
@@ -269,12 +279,106 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		else if (str=="Sign In")
 		{
 			SignIn();
-		}
+		}*/
 	}
-	
+	int DBReg()
+	{
+		String que="";
+		try
+		{
+			if (t2.getText().isEmpty()==false)
+			{
+				if (t4.getText().isEmpty()==false)
+				{
+					if (CheckID(t4.getText())==0)
+					{
+						if(ps2.getText().isEmpty()==false)
+						{
+							if (ps3.getText().equals(ps2.getText()))
+							{
+								if (t5.getText().isEmpty()==false)
+								{
+									try
+									{
+										if (t3.getText().isEmpty()==false)
+										{
+											que="insert into reg values('"+t2.getText()+"',null,'"+t4.getText()+"','"+ps2.getText()+"','"+t5.getText()+"')";
+										}
+										else
+										{
+											que="insert into reg values('"+t2.getText()+"','"+t3.getText()+"','"+t4.getText()+"','"+ps2.getText()+"','"+t5.getText()+"')";
+										}
+										stmt.executeUpdate(que);
+										que="create table "+t4.getText()+"(ID INT AUTO_INCREMENT PRIMARY KEY,WEB VARCHAR(15),EID VARCHAR(25),PAS VARCHAR(25))";
+										stmt.executeUpdate(que);
+										return 1;
+									}
+									catch(Exception e)
+									{	
+										JOptionPane.showMessageDialog(frame,e);
+									}
+								}
+								else
+								{
+									JOptionPane.showMessageDialog(frame,"Mobile Number cannot be empty");
+								}
+							}
+							else
+							{
+								JOptionPane.showMessageDialog(frame,"Password does not match");
+								JOptionPane.showMessageDialog(frame,"P1:"+ps2.getText()+"P2:"+ps3.getText());
+								ps3.setText("");
+							}
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(frame,"Password cannot be empty");
+						}
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(frame,"User already exist\nPlease Login");
+					}
+				}	
+				else
+				{
+					JOptionPane.showMessageDialog(frame,"Username cannot be empty");
+				}														
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(frame,"First name Cannot be empty");
+			}
+		}
+		catch(Exception e)
+		{
+			JOptionPane.showMessageDialog(frame,e);
+		}
+		return 0;
+	}
+	void DBlogin()
+	{
+		//return (1);
+	}
+	int CheckID(String uname)
+	{
+		ResultSet rs;
+		try
+		{
+			rs=stmt.executeQuery("select * from reg where uname like '"+uname+"'");
+			if (rs.next())
+				return 1;
+			else
+				return 0;
+		}
+		catch(Exception e)
+		{
+			JOptionPane.showMessageDialog(frame,e);
+		}
+		return 2;
+	}
 	public static void main(String[] Args)
 	{
 		new PasswordManager();
 	}
-	
 }
