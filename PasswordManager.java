@@ -2,6 +2,9 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.sql.*;
+
+/*import javax.swing.JScrollPane;
+import javax.swing.JTable;*/
 /*import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.Rectangle;
@@ -51,7 +54,6 @@ class DBMS
 public class PasswordManager extends DBMS implements MouseListener, ActionListener
 {
 	JFrame f=new JFrame("PasswordManager");
-	JFrame f1=new JFrame("Your Paswords");
 
 	JPanel p1=new JPanel();
 	JPanel p2=new JPanel();
@@ -260,26 +262,90 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		else if (str=="Login")
 		{
 			DBlogin();
+			t1.setText("");
+			ps1.setText("");
 		}
 		else if (str=="Register")
 		{
 			if (DBReg()==1)
 				Login();
 		}
-		/*else if ()
-		else if (str=="Sign Up")
+	}
+	void show()
+	{
+		try
 		{
-			if (SignUp()==1)
-				Login();
+			JFrame f1=new JFrame(t1.getText());
+			String[] col={"Id","Web","Username","Password"};
+			ResultSet rs;
+			/*JLabel jl1=new JLabel("hello");
+			jl1.setBounds(40,400,100,20);
+			f1.add(jl1,BorderLayout.NORTH);*/
+			rs=stmt.executeQuery("select count(*) from "+t1.getText());
+			rs.next();
+			Object data[][]=new Object[rs.getInt(1)][4];
+			rs=stmt.executeQuery("select * from "+t1.getText());
+			int i=0;
+			while (rs.next())
+			{	
+				data[i][0]=rs.getString(1);
+				data[i][1]=rs.getString(2);
+				data[i][2]=rs.getString(3);
+				data[i][3]=rs.getString(4);
+				i++;
+			}
+			if (i>0)
+			{
+				
+				JTable jt=new JTable(data,col);
+				/*jt.setBounds(0,0,200,400);*/
+				JScrollPane sp = new JScrollPane(jt); 
+				f1.add(sp);
+				/*f1.add(sp,BorderLayout.CENTER);*/
+				f1.setSize(400,500);
+				/*f1.setLayout(new BorderLayout());*/
+				f1.setVisible(true);
+				f1.repaint();
+			}
 			else
 			{
-
+				JOptionPane.showMessageDialog(frame,"You do not have any saved password");
 			}
 		}
-		else if (str=="Sign In")
+		catch(Exception e)
 		{
-			SignIn();
-		}*/
+			JOptionPane.showMessageDialog(frame,e);
+		}
+	}
+	void DBlogin()
+	{
+		try
+		{
+			String que="select uname from reg where uname='"+t1.getText()+"'";
+			ResultSet rs=stmt.executeQuery(que);
+			if (rs.next())
+			{	
+				que="select pword from reg where uname='"+t1.getText()+"'";
+				rs=stmt.executeQuery(que);
+				rs.next();
+				if(rs.getString(1).equals(ps1.getText()))
+				{
+					show();
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(frame,"Invalid Username or Password");
+				}
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(frame,"Enter a valid Username");
+			}
+		}
+		catch(Exception e)
+		{
+			JOptionPane.showMessageDialog(frame,e);
+		}
 	}
 	int DBReg()
 	{
@@ -312,7 +378,7 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 										que="create table "+t4.getText()+"(ID INT AUTO_INCREMENT PRIMARY KEY,WEB VARCHAR(15),EID VARCHAR(25),PAS VARCHAR(25))";
 										stmt.executeUpdate(que);
 										return 1;
-									} 
+									} 		
 									catch(Exception e)
 									{	
 										JOptionPane.showMessageDialog(frame,e);
@@ -355,10 +421,6 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 			JOptionPane.showMessageDialog(frame,e);
 		}
 		return 0;
-	}
-	void DBlogin()
-	{
-		//return (1);
 	}
 	int CheckID(String uname)
 	{
