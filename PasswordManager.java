@@ -312,7 +312,7 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 										que="create table "+t4.getText()+"(ID INT AUTO_INCREMENT PRIMARY KEY,WEB VARCHAR(15),EID VARCHAR(25),PAS VARCHAR(25))";
 										stmt.executeUpdate(que);
 										return 1;
-									}
+									} 
 									catch(Exception e)
 									{	
 										JOptionPane.showMessageDialog(frame,e);
