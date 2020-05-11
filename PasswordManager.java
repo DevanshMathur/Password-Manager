@@ -46,7 +46,7 @@ class DBMS
 			catch(Exception e1)
 			{
 				//System.out.println("P2:"+e1);
-				JOptionPane.showMessageDialog(frame,e1);
+				JOptionPane.showMessageDialog(frame,"Error No 6\n"+e1);
 			}
 		}	 
 	}
@@ -54,6 +54,8 @@ class DBMS
 public class PasswordManager extends DBMS implements MouseListener, ActionListener
 {
 	JFrame f=new JFrame("PasswordManager");
+	JFrame f1;
+	JFrame jf1=new JFrame("Delete Record");
 
 	JPanel p1=new JPanel();
 	JPanel p2=new JPanel();
@@ -63,6 +65,7 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 	JButton b2=new JButton("Sign Up");
 	JButton b3=new JButton("Login");
 	JButton b4=new JButton("Register");
+
 	
 	JLabel l1=new JLabel("Welcome To Password Manager.");
 	JLabel l2=new JLabel("Your Passwords are secure with us.");
@@ -76,18 +79,23 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 	JLabel l10=new JLabel("Password");
 	JLabel l11=new JLabel("Confirm");
 	JLabel l12=new JLabel("Mobile Number");
+	JLabel jl3;
+	JLabel jl4;
 
 	JTextField t1=new JTextField(25);
 	JTextField t2=new JTextField(25);
 	JTextField t3=new JTextField(25);
 	JTextField t4=new JTextField(25);
 	JTextField t5=new JTextField(25);
+	JTextField jtf=new JTextField(10);
 
 	JTextArea ta=new JTextArea(); 
 
 	JPasswordField ps1=new JPasswordField();
 	JPasswordField ps2=new JPasswordField();
 	JPasswordField ps3=new JPasswordField();
+
+	String unm;
 
 	/*	JScrollBar hbar=new JScrollBar(JScrollBar.HORIZONTAL);
 	JScrollBar vbar=new JScrollBar(JScrollBar.VERTICAL);*/
@@ -99,6 +107,8 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		int w=screenSize.width;
 		h=3*h/4;
 		w=w/2;*/
+			
+		
 		
 		l1.setBounds(80,30,290,20);
 		l2.setBounds(70,50,290,20);
@@ -116,6 +126,7 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		//f.add(p1,BorderLayout.CENTER);
 
 		p1.setLayout(null);
+		jf1.setLayout(null);
 		//p1.setBackground(Color.blue);
 		
 		b1.addActionListener(this);
@@ -123,6 +134,7 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		
 		
 		f.setSize(600,700);
+		jf1.setSize(400,300);
 		
 		f.setVisible(true);
 		p1.setLocation(200,200);
@@ -211,14 +223,6 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		p3.setLayout(null);
 		f.repaint();	
 	}
-	/*int SignUp()
-	{
-		return(1);
-	}
-	int SignIn()
-	{
-		return(1);
-	}*/
 	public void mouseEntered(MouseEvent e)
 	{
 		Bound();
@@ -261,6 +265,7 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		}
 		else if (str=="Login")
 		{
+			unm=t1.getText();
 			DBlogin();
 			t1.setText("");
 			ps1.setText("");
@@ -270,21 +275,148 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 			if (DBReg()==1)
 				Login();
 		}
+		else if(str=="New")
+		{
+			New();
+		}
+		else if(str=="Update")
+		{
+			Update();
+		}
+		else if(str=="Delete")
+		{
+			Del();
+		}
+		else if(str=="Delete Account")
+		{
+			DelAcc();
+		}
+		else if (str=="Remove")
+		{
+			Remove();
+		}
+		else if(str=="Done")
+		{
+			Done();
+		}
+		else if(str=="Add")
+		{
+			ADD();
+		}
+	}
+	void New()
+	{
+		
+
+
+	}
+	void ADD()
+	{
+
+	}
+	void Update()		
+	{
+
+	}
+	void Done()
+	{
+
+	}
+	void Del()
+	{
+		
+		jl3=new JLabel("Delete Record");
+		jl4=new JLabel("Id");
+		JButton b5=new JButton("Remove");
+		
+		jl3.setBounds(130,25,100,20);
+		jl4.setBounds(120,80,40,20);
+		jtf.setBounds(150,80,70,20);
+		b5.setBounds(130,120,90,20);
+
+		jf1.add(jl3);
+		jf1.add(jl4);
+		jf1.add(jtf);
+		jf1.add(b5);
+
+		jf1.setVisible(true);
+		b5.addActionListener(this);
+	}
+	void Remove()
+	{
+		try
+		{
+			if (jtf.equals(""))
+			{
+				JOptionPane.showMessageDialog(frame,"Id cannot be empty");
+			}
+			else
+			{
+				ResultSet rs=stmt.executeQuery("select * from "+unm+" where id="+jtf.getText());
+				if (rs.next())
+				{
+					stmt.executeUpdate("delete from "+unm+" where id="+jtf.getText());
+					JOptionPane.showMessageDialog(frame,"Deleted successfully");
+					 /*delete from a where id='118';*/
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(frame,"ID "+jtf.getText()+" does not exist");
+				}
+			}
+		}
+		catch(Exception e1)
+		{
+			JOptionPane.showMessageDialog(frame,"Error No 7\n"+e1);
+		}
+		finally
+		{
+			f1.dispose();
+			jf1.dispose();
+			show();
+			jtf.setText("");
+		}
+	}
+	void DelAcc()
+	{
+		try
+		{
+			stmt.executeUpdate("drop table "+unm);
+			stmt.executeUpdate("delete from reg where uname='"+unm+"'");
+			f1.dispose();
+			JOptionPane.showMessageDialog(frame,"Account deleted successfully");
+		}
+		catch(Exception e)
+		{
+			JOptionPane.showMessageDialog(frame,"Unable to process\tTry again.\n"+e);
+		}
 	}
 	void show()
 	{
 		try
 		{
-			JFrame f1=new JFrame(t1.getText());
 			String[] col={"Id","Web","Username","Password"};
+			f1=new JFrame(unm);		
+			JButton jb1=new JButton("New");
+			JButton jb2=new JButton("Update");
+			JButton jb3=new JButton("Delete");
+			JButton jb4=new JButton("Delete Account");
+			JPanel jp1=new JPanel();
+			JScrollPane sp;
 			ResultSet rs;
-			/*JLabel jl1=new JLabel("hello");
-			jl1.setBounds(40,400,100,20);
-			f1.add(jl1,BorderLayout.NORTH);*/
-			rs=stmt.executeQuery("select count(*) from "+t1.getText());
+			JLabel jl1,jl2;
+			JTable jt;
+
+				
+			rs=stmt.executeQuery("select fname,uname from reg where uname='"+unm+"'");
+			rs.next();
+			jl1=new JLabel("Hello "+rs.getString(1));
+			jl2=new JLabel(rs.getString(2));
+				
+			rs=stmt.executeQuery("select count(*) from "+unm);
 			rs.next();
 			Object data[][]=new Object[rs.getInt(1)][4];
-			rs=stmt.executeQuery("select * from "+t1.getText());
+			rs=stmt.executeQuery("select * from "+unm);
 			int i=0;
 			while (rs.next())
 			{	
@@ -294,38 +426,51 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 				data[i][3]=rs.getString(4);
 				i++;
 			}
-			if (i>0)
-			{
-				
-				JTable jt=new JTable(data,col);
-				/*jt.setBounds(0,0,200,400);*/
-				JScrollPane sp = new JScrollPane(jt); 
-				f1.add(sp);
-				/*f1.add(sp,BorderLayout.CENTER);*/
-				f1.setSize(400,500);
-				/*f1.setLayout(new BorderLayout());*/
-				f1.setVisible(true);
-				f1.repaint();
-			}
-			else
-			{
-				JOptionPane.showMessageDialog(frame,"You do not have any saved password");
-			}
+		
+			jt=new JTable(data,col);	
+			sp = new JScrollPane(jt); 
+
+			jl1.setBounds(20,20,100,20);			
+			jl2.setBounds(20,50,100,20);
+			jb1.setBounds(20,80,80,20);
+			jb2.setBounds(110,80,80,20);
+			jb3.setBounds(200,80,80,20);
+			jb4.setBounds(290,80,120,20);
+			jt.setBounds(0,120,400,350);
+			jp1.setLayout(null);
+			f1.setSize(450,500);
+			jp1.setSize(450,50);
+
+			jp1.add(jl1);
+			jp1.add(jl2);
+			jp1.add(jb1);
+			jp1.add(jb2);
+			jp1.add(jb3);
+			jp1.add(jb4);
+			f1.add(jp1);
+			f1.add(sp);
+			jb1.addActionListener(this);
+			jb2.addActionListener(this);
+			jb3.addActionListener(this);
+			jb4.addActionListener(this);
+
+			f1.setVisible(true);
+			f1.setLayout(new GridLayout(2,1));
 		}
 		catch(Exception e)
 		{
-			JOptionPane.showMessageDialog(frame,e);
+			JOptionPane.showMessageDialog(frame,"Error No 5\n"+e);
 		}
 	}
 	void DBlogin()
 	{
 		try
 		{
-			String que="select uname from reg where uname='"+t1.getText()+"'";
+			String que="select uname from reg where uname='"+unm+"'";
 			ResultSet rs=stmt.executeQuery(que);
 			if (rs.next())
 			{	
-				que="select pword from reg where uname='"+t1.getText()+"'";
+				que="select pword from reg where uname='"+unm+"'";
 				rs=stmt.executeQuery(que);
 				rs.next();
 				if(rs.getString(1).equals(ps1.getText()))
@@ -344,7 +489,7 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		}
 		catch(Exception e)
 		{
-			JOptionPane.showMessageDialog(frame,e);
+			JOptionPane.showMessageDialog(frame,"Error No 4\n"+e);
 		}
 	}
 	int DBReg()
@@ -381,7 +526,7 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 									} 		
 									catch(Exception e)
 									{	
-										JOptionPane.showMessageDialog(frame,e);
+										JOptionPane.showMessageDialog(frame,"Error No 3\n"+e);
 									}
 								}
 								else
@@ -418,7 +563,7 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		}
 		catch(Exception e)
 		{
-			JOptionPane.showMessageDialog(frame,e);
+			JOptionPane.showMessageDialog(frame,"Error No 1\n"+e);
 		}
 		return 0;
 	}
@@ -435,7 +580,7 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		}
 		catch(Exception e)
 		{
-			JOptionPane.showMessageDialog(frame,e);
+			JOptionPane.showMessageDialog(frame,"Error No 2\n"+e);
 		}
 		return 2;
 	}
