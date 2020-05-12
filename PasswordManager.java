@@ -11,7 +11,7 @@ import java.awt.Rectangle;
 */
 
 class DBMS 
-{
+{ 
 	JFrame frame =new JFrame();
 	Connection con;
 	Statement stmt;
@@ -378,7 +378,7 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		}
 	}
 	void DelAcc()
-	{
+	{ 
 		try
 		{
 			stmt.executeUpdate("drop table "+unm);
