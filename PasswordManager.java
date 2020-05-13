@@ -56,6 +56,8 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 	JFrame f=new JFrame("PasswordManager");
 	JFrame f1;
 	JFrame jf1=new JFrame("Delete Record");
+	JFrame jf2=new JFrame();
+	JFrame jf3=new JFrame();
 
 	JPanel p1=new JPanel();
 	JPanel p2=new JPanel();
@@ -63,7 +65,6 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 
 	JButton b1=new JButton("Sign In");
 	JButton b2=new JButton("Sign Up");
-	JButton b3=new JButton("Login");
 	JButton b4=new JButton("Register");
 
 	
@@ -88,12 +89,21 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 	JTextField t4=new JTextField(25);
 	JTextField t5=new JTextField(25);
 	JTextField jtf=new JTextField(10);
+	JTextField jtf1=new JTextField(25);
+	JTextField jtf2=new JTextField(25);
+	JTextField jtf3=new JTextField(25);
+	JTextField jtf4=new JTextField(25);
+	JTextField jtf5=new JTextField(25);
+	JTextField jtf6=new JTextField(25);
+	JTextField jtf7=new JTextField(25);
+	
 
 	JTextArea ta=new JTextArea(); 
 
 	JPasswordField ps1=new JPasswordField();
 	JPasswordField ps2=new JPasswordField();
 	JPasswordField ps3=new JPasswordField();
+	JPasswordField ps4=new JPasswordField();
 
 	String unm;
 
@@ -107,9 +117,7 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		int w=screenSize.width;
 		h=3*h/4;
 		w=w/2;*/
-			
-		
-		
+
 		l1.setBounds(80,30,290,20);
 		l2.setBounds(70,50,290,20);
 		b1.setBounds(75,100,90,20);
@@ -127,6 +135,8 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 
 		p1.setLayout(null);
 		jf1.setLayout(null);
+		jf2.setLayout(null);
+		jf3.setLayout(null);
 		//p1.setBackground(Color.blue);
 		
 		b1.addActionListener(this);
@@ -135,6 +145,8 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		
 		f.setSize(600,700);
 		jf1.setSize(400,300);
+		jf2.setSize(400,300);
+		jf3.setSize(400,300);
 		
 		f.setVisible(true);
 		p1.setLocation(200,200);
@@ -157,6 +169,8 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 	}
 	void Login()
 	{
+		JButton b3=new JButton("Login");
+
 		p1.remove(p3);
 		p1.remove(b1);
 		p1.add(b2);
@@ -230,6 +244,8 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 	public void mouseClicked(MouseEvent e)
 	{
 		f.repaint();
+	/*	jtf5.setText("hyh");
+         System.out.println("hello");*/
 	}
 	public void mouseExited(MouseEvent e)
 	{
@@ -278,10 +294,16 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		else if(str=="New")
 		{
 			New();
+			jtf1.setText("");
+			jtf1.setText("");
+			ps4.setText("");
 		}
 		else if(str=="Update")
 		{
 			Update();
+			jtf1.setText("");
+			jtf1.setText("");
+			ps4.setText("");
 		}
 		else if(str=="Delete")
 		{
@@ -306,21 +328,183 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 	}
 	void New()
 	{
-		
+		JButton b5=new JButton("Add");
+		JLabel jl5=new JLabel("Website");
+		JLabel jl6=new JLabel("Username");
+		JLabel jl7=new JLabel("Password");
 
+		jf2.setTitle("Add new Record");
 
+		jl5.setBounds(30,50,70,20);
+		jtf1.setBounds(110,50,70,20);
+		jl6.setBounds(30,80,70,20);
+		jtf2.setBounds(110,80,70,20);
+		jl7.setBounds(30,110,70,20);
+		ps4.setBounds(110,110,70,20);
+		b5.setBounds(170,140,60,20);
+
+		jf2.add(jl5);
+		jf2.add(jtf1);
+		jf2.add(jl6);
+		jf2.add(jtf2);
+		jf2.add(jl7);
+		jf2.add(ps4);
+		jf2.add(b5);
+
+		jf2.setVisible(true);
+		b5.addActionListener(this);
 	}
 	void ADD()
 	{
-
+		if(jtf1.getText().isEmpty()==false && jtf2.getText().isEmpty()==false && ps4.getText().isEmpty()==false)
+		{
+			try
+			{
+				stmt.executeUpdate("insert into "+unm+"(web,eid,pas) values ('"+jtf1.getText()+"','"+jtf2.getText()+"','"+ps4.getText()+"')");
+				JOptionPane.showMessageDialog(frame,"Data inserted");
+			}
+			catch(Exception e)
+			{
+				JOptionPane.showMessageDialog(frame,"Error No 8\nUnable to Process\n"+e);
+			}
+			finally
+			{
+				f1.dispose();
+				jf2.dispose();
+				show();
+			}
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(frame,"Fields cannot be empty");
+		}
 	}
 	void Update()		
 	{
+		JButton b5=new JButton("Done");
+		JLabel jl5=new JLabel("Website");
+		JLabel jl6=new JLabel("Username");
+		JLabel jl7=new JLabel("Password");
+		JLabel jl8=new JLabel("ID");
 
+
+		jf2.setTitle("Update Record");
+
+		jl8.setBounds(70,50,90,20);
+		jtf4.setBounds(180,50,90,20);
+		jl5.setBounds(70,80,90,20);
+		jtf5.setBounds(180,80,90,20);
+		jl6.setBounds(70,110,90,20);
+		jtf6.setBounds(180,110,90,20);
+		jl7.setBounds(70,140,90,20);
+		jtf7.setBounds(180,140,90,20);
+		b5.setBounds(125,200,90,20);
+
+		jf3.add(jl8);
+		jf3.add(jtf4);
+		jf3.add(jl5);
+		jf3.add(jtf5);
+		jf3.add(jl6);
+		jf3.add(jtf6);
+		jf3.add(jl7);
+		jf3.add(jtf7);
+		jf3.add(b5);
+
+		jf3.setVisible(true);
+		b5.addActionListener(this);
+		jtf5.addMouseListener(new MouseListener(){ 
+		public void mouseEntered(MouseEvent e){}
+		public void mouseClicked(MouseEvent e)
+		{
+			if(jtf4.getText().isEmpty()==false)
+			{
+				try 
+				{
+					Integer.parseInt(jtf4.getText());
+					try
+					{
+						ResultSet rs=stmt.executeQuery("select id from "+unm+" where id="+jtf4);
+						try
+						{
+							rs=stmt.executeQuery("select * from "+unm+" where id="+jtf4.getText());
+							rs.next();
+							jtf5.setText(rs.getString(2));
+							jtf6.setText(rs.getString(3));
+							jtf7.setText(rs.getString(4));
+						}
+						catch(Exception e1)
+						{
+							JOptionPane.showMessageDialog(frame,"Error No 9\n"+e);
+						}
+					}
+					catch(Exception e3)
+					{
+						JOptionPane.showMessageDialog(frame,"Id does not exist");	
+					}
+				}
+				catch(Exception e2)
+				{
+					JOptionPane.showMessageDialog(frame,"ID can only be integer");
+					jtf4.setText("");
+				}
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(frame,"Id cannot be empty");
+			}
+		}
+		public void mouseExited(MouseEvent e){}
+		public void mouseReleased(MouseEvent e){}
+		public void mousePressed(MouseEvent e){}
+        });
 	}
 	void Done()
 	{
+		if(jtf4.getText().isEmpty()==false)
+		{
+			try
+			{
+				if(jtf5.getText().isEmpty()==false && jtf6.getText().isEmpty()==false && jtf7.getText().isEmpty()==false)
+				{
+					try
+					{	
+						ResultSet rs=stmt.executeQuery("select id from "+unm+" where id="+jtf4);
+						try
+						{
 
+							stmt.executeUpdate("update "+unm+" set web='"+jtf5.getText()+"',eid='"+jtf6.getText()+"',pas='"+jtf7.getText()+"' where id="+jtf4.getText());
+							JOptionPane.showMessageDialog(frame,"Data Updated Successfully"); 
+						}
+						catch(Exception e)
+						{
+							JOptionPane.showMessageDialog(frame,"Error No 8\nUnable to Update\n"+e);
+						}
+						finally
+						{
+							f1.dispose();
+							jf2.dispose();
+							show();
+						}
+					}
+					catch(Exception e)
+					{
+						JOptionPane.showMessageDialog(frame,"Id does not exist");
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(frame,"Fields cannot be empty");
+				}
+			}
+			catch(Exception e)
+			{
+				JOptionPane.showMessageDialog(frame,"Id can only be integer");
+			}
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(frame,"ID cannot be empty");
+		}
 	}
 	void Del()
 	{
