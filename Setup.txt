@@ -1,0 +1,10 @@
+Java version "13.0.1"
+Install MySql (mysql-installer-community-8.0.16.0.msi) as developer 64 bit
+Extract connector (mysql-connector-java-8.0.20.jar)
+Compile program
+Run Program
+
+
+to set up class path
+create new user variable as 'classpath' and keep the path of driver and add ';.;' in last
+in our case 'classpath' is 'C:\Program Files (x86)\MySQL\Connector J 8.0\mysql-connector-java-8.0.16.jar;.;'

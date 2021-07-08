@@ -17,6 +17,15 @@ class DBMS
 	Statement stmt;
 	DBMS()
 	{
+		/*String command = "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqld.exe";
+		try
+		{
+		    Process process = Runtime.getRuntime().exec(command);
+		} 
+		catch (IOException e)
+		{
+		    e.printStackTrace();
+		}*/
 		String sql="CREATE TABLE Reg ("+
 					"FNAME VARCHAR(30) NOT NULL ,"+
 					"LNAME VARCHAR(30) ,"+
@@ -33,7 +42,8 @@ class DBMS
 		catch(Exception e)
 		{
 			//System.out.println("P1:"+e);
-			JOptionPane.showMessageDialog(frame,"Creating Database\n"+e);
+			JOptionPane.showMessageDialog(frame,"Creating Database");
+			System.out.println("Creating Database\n"+e);
 			try
 			{
 				con=DriverManager.getConnection("jdbc:mysql://localhost:3306/","root","Tiger");
@@ -46,7 +56,8 @@ class DBMS
 			catch(Exception e1)
 			{
 				//System.out.println("P2:"+e1);
-				JOptionPane.showMessageDialog(frame,"Error No 6\n"+e1);
+				JOptionPane.showMessageDialog(frame,"Error No 6"+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
+				System.out.println("Error No 6\n"+e1+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
 			}
 		}	 
 	}
@@ -365,7 +376,8 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 			}
 			catch(Exception e)
 			{
-				JOptionPane.showMessageDialog(frame,"Error No 8\nUnable to Process\n"+e);
+				JOptionPane.showMessageDialog(frame,"Error No 8\nUnable to Process"+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
+				System.out.println("Error No 8\nUnable to Process\n"+e+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
 			}
 			finally
 			{
@@ -423,10 +435,10 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 					Integer.parseInt(jtf4.getText());
 					try
 					{
-						ResultSet rs=stmt.executeQuery("select id from "+unm+" where id="+jtf4);
+						ResultSet rs=stmt.executeQuery("select id from "+unm+" where id="+Integer.parseInt(jtf4.getText()));
 						try
 						{
-							rs=stmt.executeQuery("select * from "+unm+" where id="+jtf4.getText());
+							rs=stmt.executeQuery("select * from "+unm+" where id="+Integer.parseInt(jtf4.getText()));
 							rs.next();
 							jtf5.setText(rs.getString(2));
 							jtf6.setText(rs.getString(3));
@@ -434,18 +446,22 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 						}
 						catch(Exception e1)
 						{
-							JOptionPane.showMessageDialog(frame,"Error No 9\n"+e);
+							JOptionPane.showMessageDialog(frame,"Error No 9"+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
+							System.out.println("Error No 9\n"+e1+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
 						}
 					}
 					catch(Exception e3)
 					{
-						JOptionPane.showMessageDialog(frame,"Id does not exist");	
+						System.out.println("\n\nLine 6\n\n");
+						JOptionPane.showMessageDialog(frame,"Id does not exist ");	
+						System.out.println("Id does not exist\n"+e3);
 					}
 				}
 				catch(Exception e2)
 				{
 					JOptionPane.showMessageDialog(frame,"ID can only be integer");
 					jtf4.setText("");
+					System.out.println("ID can only be integer"+e2);
 				}
 			}
 			else
@@ -463,12 +479,12 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		if(jtf4.getText().isEmpty()==false)
 		{
 			try
-			{
+			{	
 				if(jtf5.getText().isEmpty()==false && jtf6.getText().isEmpty()==false && jtf7.getText().isEmpty()==false)
 				{
 					try
 					{	
-						ResultSet rs=stmt.executeQuery("select id from "+unm+" where id="+jtf4);
+						ResultSet rs=stmt.executeQuery("select id from "+unm+" where id="+Integer.parseInt(jtf4.getText()));
 						try
 						{
 
@@ -477,7 +493,8 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 						}
 						catch(Exception e)
 						{
-							JOptionPane.showMessageDialog(frame,"Error No 8\nUnable to Update\n"+e);
+							JOptionPane.showMessageDialog(frame,"Error No 8\nUnable to Update"+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
+							System.out.println("Error No 8\nUnable to Update\n"+e+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
 						}
 						finally
 						{
@@ -489,6 +506,7 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 					catch(Exception e)
 					{
 						JOptionPane.showMessageDialog(frame,"Id does not exist");
+						System.out.println(e);
 					}
 				}
 				else
@@ -499,6 +517,7 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 			catch(Exception e)
 			{
 				JOptionPane.showMessageDialog(frame,"Id can only be integer");
+				System.out.println("Id can only be integer\n"+e);
 			}
 		}
 		else
@@ -551,7 +570,8 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		}
 		catch(Exception e1)
 		{
-			JOptionPane.showMessageDialog(frame,"Error No 7\n"+e1);
+			JOptionPane.showMessageDialog(frame,"Error No 7"+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
+			System.out.println("Error No 7\n"+e1+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
 		}
 		finally
 		{
@@ -572,7 +592,8 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		}
 		catch(Exception e)
 		{
-			JOptionPane.showMessageDialog(frame,"Unable to process\tTry again.\n"+e);
+			JOptionPane.showMessageDialog(frame,"Unable to process\tTry again.");
+			System.out.println("Unable to process\tTry again.\n"+e);
 		}
 	}
 	void show()
@@ -595,7 +616,7 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 			rs=stmt.executeQuery("select fname,uname from reg where uname='"+unm+"'");
 			rs.next();
 			jl1=new JLabel("Hello "+rs.getString(1));
-			jl2=new JLabel(rs.getString(2));
+			jl2=new JLabel("Uname : "+rs.getString(2));
 				
 			rs=stmt.executeQuery("select count(*) from "+unm);
 			rs.next();
@@ -643,7 +664,8 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		}
 		catch(Exception e)
 		{
-			JOptionPane.showMessageDialog(frame,"Error No 5\n"+e);
+			JOptionPane.showMessageDialog(frame,"Error No 5"+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
+			System.out.println("Error No 5\n"+e+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
 		}
 	}
 	void DBlogin()
@@ -673,7 +695,8 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		}
 		catch(Exception e)
 		{
-			JOptionPane.showMessageDialog(frame,"Error No 4\n"+e);
+			JOptionPane.showMessageDialog(frame,"Error No 4"+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
+			System.out.println("Error No 4\n"+e+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
 		}
 	}
 	int DBReg()
@@ -697,11 +720,11 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 									{
 										if (t3.getText().isEmpty()==false)
 										{
-											que="insert into reg values('"+t2.getText()+"',null,'"+t4.getText()+"','"+ps2.getText()+"','"+t5.getText()+"')";
+											que="insert into reg values('"+t2.getText()+"','"+t3.getText()+"','"+t4.getText()+"','"+ps2.getText()+"','"+t5.getText()+"')";
 										}
 										else
 										{
-											que="insert into reg values('"+t2.getText()+"','"+t3.getText()+"','"+t4.getText()+"','"+ps2.getText()+"','"+t5.getText()+"')";
+											que="insert into reg values('"+t2.getText()+"',null,'"+t4.getText()+"','"+ps2.getText()+"','"+t5.getText()+"')";
 										}
 										stmt.executeUpdate(que);
 										que="create table "+t4.getText()+"(ID INT AUTO_INCREMENT PRIMARY KEY,WEB VARCHAR(15),EID VARCHAR(25),PAS VARCHAR(25))";
@@ -710,7 +733,8 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 									} 		
 									catch(Exception e)
 									{	
-										JOptionPane.showMessageDialog(frame,"Error No 3\n"+e);
+										JOptionPane.showMessageDialog(frame,"Error No 3"+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
+										System.out.println("Error No 3\n"+e+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
 									}
 								}
 								else
@@ -747,7 +771,8 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		}
 		catch(Exception e)
 		{
-			JOptionPane.showMessageDialog(frame,"Error No 1\n"+e);
+			JOptionPane.showMessageDialog(frame,"Error No 1"+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
+			System.out.println("Error No 1\n"+e+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
 		}
 		return 0;
 	}
@@ -764,7 +789,8 @@ public class PasswordManager extends DBMS implements MouseListener, ActionListen
 		}
 		catch(Exception e)
 		{
-			JOptionPane.showMessageDialog(frame,"Error No 2\n"+e);
+			JOptionPane.showMessageDialog(frame,"Error No 2"+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
+			System.out.println("Error No 2\n"+e+"\t#"+new Exception().getStackTrace()[0].getLineNumber());
 		}
 		return 2;
 	}
